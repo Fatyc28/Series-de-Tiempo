@@ -1,0 +1,7 @@
+data ("AirPassengers")
+class(AirPassengers)
+start(AirPassengers)##muestracuando inicia la st
+end(AirPassengers)##muestra cuando acaba la st
+frequency(AirPassengers)## que frecuencia la st (12 = datos mensuales)
+summary(AirPassengers)## resumen de los datos de st (estadistica desriptiva)
+plot(AirPassengers)##grafica con el numero de pasajeros y el tiempo.
