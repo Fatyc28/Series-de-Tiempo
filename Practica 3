@@ -1,0 +1,74 @@
+##1. simulacion de series de tiempo
+##vamos a simular 1 indicador
+##para la simulacion en principio necesitamod alguna informacion
+##valor maximo, minimo, el numero de datos
+
+##en este ejemplo vamos a proponer la poblacion en mexico
+##que el valor minimo seran 100, max 120. 15 datos que inicien en 2000
+pob <-sample (100:120, 15, replace = F)
+pob #visualizamos en consola
+
+#la convertimos en serie de tiempo
+pobts <-ts (pob, frequency = 1, start = (2000))
+#cuando termina la ST
+end(pobts)
+#cuando empieza la ST
+start(pobts)
+
+#darle formato
+plot(pobts)
+#graficar
+plot(aggregate(pobts))
+
+
+
+
+
+
+
+##bajar del inegi la ocupacion de las personas
+##importar csv
+##importar csv
+#convertimos csv (delimitado por comas)
+infor<- ts(read.csv(("C:\\Users\\Sala-D3\\Downloads\\enoe.csv")),frequency= 4, start=(2005))
+infor
+
+infor<- ts(read.csv(("C:\\Users\\Sala-D3\\Downloads\\enoe.csv"),header = T),frequency= 4, start=(2005)
+infor
+
+
+
+
+
+##bajar las bases de datos de Inegi
+##importar csv
+#convertimos csv (delimitado por comas)
+#importamos la base de datos (tal y como esta en excel)
+indi3<-(read.csv(("C:\\Users\\Sala-D3\\Downloads\\Tasas.csv")))
+#LLama la columna 1 base(fila, columna), donde comienza,freq
+decost <- ts(indi3[,1],frequency =4,start=(2005), end=2015)
+decost
+
+#declarar 3 series de tiempo de la matriz indi3
+#la serie de tiempo deben ser la tasa de ocupacion parcial
+#trabajo asalariados y tasa de condiciones criticas
+indi3<-(read.csv(("C:\\Users\\Sala-D3\\Downloads\\Tasas.csv")))
+#LLama la columna 1 base(fila, columna), donde comienza,freq
+condst <- ts(indi3[,2],frequency =4,start=(2005), end=2015)
+condst
+
+#declarar 3 series de tiempo de la matriz indi3
+#la serie de tiempo deben ser la tasa de ocupacion parcial
+#trabajo asalariados y tasa de condiciones criticas
+indi3<-(read.csv(("C:\\Users\\Sala-D3\\Downloads\\Tasas.csv")))
+#LLama la columna 1 base(fila, columna), donde comienza,freq
+trabst <- ts(indi3[,3],frequency =4,start=(2005), end=2015)
+trabst
+
+#declarar 3 series de tiempo de la matriz indi3
+#la serie de tiempo deben ser la tasa de ocupacion parcial
+#trabajo asalariados y tasa de condiciones criticas
+indi3<-(read.csv(("C:\\Users\\Sala-D3\\Downloads\\Tasas.csv")))
+#LLama la columna 1 base(fila, columna), donde comienza,freq
+ocupst <- ts(indi3[,4],frequency =4,start=(2005), end=2015)
+ocupst
