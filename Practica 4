@@ -1,0 +1,75 @@
+#1.- Buscamos INEGI
+#2.- Bajamos la ST
+#3.- Ubicar la ruta de la ST en la computadora
+#4 Importamos en R el archivo .csv
+#5.- Reconocer el archivo como ST.
+
+
+
+######
+#generar 4 objetos con datos aleatorios y que tengan 60 datos
+#objeto 1 de numero de profesionista (mil) rango de 5 a 8
+#objeto 2 crec pib rango de 0 a 5
+#objeto 3 porcentaje de ocupados rango de 40 a 60
+#Objeto 4 porcentaje de desocupados rango de 3 a 8
+
+prof<- sample (5:8, 60, replace = TRUE) #objeto 1
+crecp<- sample (0:5, 60, replace = TRUE) #objeto 2
+pocup<- sample (40:60, 60, replace = TRUE) #objeto 3
+pdeso<- sample (3:8, 60, replace = TRUE) #objeto 4
+
+#1.- Una vez que genere los datos hacer un data frame de los 4 objetos
+pceu<-data.frame(prof,crecp,pocup,pdeso)
+
+#2.- Mostrar en consola los primeros 12 y ultimos 12 datos
+pceu [1:12, ]    #(renglon, columna) muestra los primeros 12 renglones
+pceu [49: 60, ]  #se usa por ejemplo si queremos añalizar un periodo en especifico
+
+#3.- Convertir los objetos en series de tiempo 
+#comenzando en 2010 y
+#son datos mensuales
+sporf<- ts(prof, frequency= 12, start = (2010))
+screcp<- ts(crecp, frequency= 12, start = (2010))
+spocup<- ts(pocup, frequency= 12, start = (2010))
+sdeso<- ts(pdeso, frequency= 12, start = (2010))
+end (sporf)
+
+#4 Graficar los profesionistas y ocupados en la misma imagen
+plot(cbind(sporf, spocup))
+
+#5 Graficar pib y desocupados en la misma imagen
+plot(cbind(screcp, sdeso))
+
+#6 Graficar todas en la misma imagen
+plot(cbind(sporf, spocup, screcp, sdeso))
+
+#Graficar los profesionistas y ocupados en la misma imagen con plot sin cbind
+plot.ts(pceu [, c(1,3)])
+
+#serie de tiempo multiple (4)
+pceusts<- ts.intersect(pceu)
+########################
+#Bajamos la base de datos del PIB (tasa de creciniebo anual) en mexico 1980 a 2015
+#http://datos.bancomundial.org/indicator/NY.GDP.MKTP.KD.ZG?locations=MX
+
+#Creamos cuatro series de tiempo de
+#'80 al '90
+#'91 al '00
+#'00 al 2010
+#'2011 al 2015
+
+pibmex<-(read.csv(("C:\\Users\\Sala-D11\\Documents\\pib.csv")))
+st1<-pibmex [1:11, ]
+st2<-pibmex [12:21, ]
+st3<-pibmex [22:31, ]
+st4<-pibmex [32:36, ]
+
+sst1<- ts(st1, frequency= 1, start = (1980))
+sst2<- ts(st2, frequency= 1, start = (1991))
+sst3<- ts(st3, frequency= 1, start = (2001))
+sst4<- ts(st4, frequency= 1, start = (2011))
+
+#Graficamos 2 y 3 
+#Graficamos 1 y 4
+plot.ts(pceu [, c(2,3)])
+plot.ts(pceu [, c(1,4)])
