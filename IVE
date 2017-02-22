@@ -1,0 +1,37 @@
+#                                                                                         22/02/2017
+
+
+desocupación <- read.csv("tarea2.csv")
+desocupación
+tsdesoc <- ts(desocupación, frequency = 4, start=2005)
+tsdesoc
+desoc <- c((desocupación[1,]+desocupación[2,]+desocupación[3,]+desocupación[4,])/4)
+desoc
+
+f
+f<- function(x) return(c((desocupación[x,]+desocupación[x+1,]+desocupación[x+2,]+desocupación[x+3,])/4))
+x <- c(1:46)
+f(x)
+nocentral <- c(f(x))
+
+g <- function(y) return(c((nocentral[y]+nocentral[y+1])/2))
+y <- c(1:44)
+tendcentral <- g(y)
+tendcentral
+
+tcental <- c(0,0, tendcentral, 0, 0)
+tcental
+
+mattc <- matrix(tcental, ncol=12)
+mattc
+
+matdesoc <- matrix(desocupación[1:48,], ncol=12)
+matdesoc
+
+aditivo <- matdesoc-mattc
+aditivo
+
+h <- function(f,z) return(c(aditivo[f,z]+aditivo[f,z+1]+aditivo[f,z+2]+aditivo[f,z+3]+aditivo[f,z+4]+aditivo[f,z+5]+aditivo[f,z+6]+aditivo[f,z+7]+aditivo[f,z+8]+aditivo[f,z+9]+aditivo[f,z+10]))
+IVE <- c(h(1,2)/11, h(2,2)/11, h(3,1)/11, h(4,1)/11)
+IVE
+
