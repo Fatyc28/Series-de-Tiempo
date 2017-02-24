@@ -1,0 +1,63 @@
+  ###*****###
+  ### FOR ###
+  ###*****###
+
+u1<- (1:10)  ##desde 1 hasta 10
+for(i in 1:10){ 
+  u1[i]<-u1[i]+2 ##suma 2 a cada numero
+  print(u1[i])   ##muestra valores
+}
+u1
+
+  ##*******##
+  ## WHILE ##
+  ##*******##
+
+s<-5
+while (s<6) {s<-s*2; print(s);}
+
+s<-2
+while (s<5) {s<-s+1; ;if (s==4)break; print(s);}
+
+s<-1
+while (s<5) {s<-s+1; ;if (s==4)break; print(s);} ##llega solo hasta 4 por el break
+
+s<-1
+while (s<5) {s<-0+1; ;if (s==2)break; print(s);} ##corre todos los valores pq no encuentra el 2
+
+s<-2
+while (s<5) {s<-s+1; ;if (s==3) next; print(s);}
+
+  ##**********##
+  ## GRAFICAS ##
+  ##**********##
+
+desocupacion<-(read.csv(("C:\\Users\\SALA-D12\\Downloads\\tarea2.csv")))
+tsdes<- ts(desocupacion, frequency=4,start=2005)
+detsdes<-decompose(tsdes)
+detsdes$trend
+detsdes$seasonal
+plot(tsdes, col="blue",
+     main="Tasa desocupacion trimestral",
+     ylab="Tasas", xlab="Años")
+lines(detsdes$trend,col="red", ylab="Tendencia")
+
+
+  ##*****************##
+  ## ESTACIONARIEDAD ##
+  ##*****************##
+
+monthplot(detsdes$seasonal, main="IVEc", ylab= "IVEc Trimestral")
+##Grafica los elementos estacionales
+
+
+
+
+
+#####TAREA MODELO MULTIPLICATIVO######
+
+###1)encontrar una st con tendencia a la alza y
+##estacionariedad tambien se encremente
+###2)aplicar modelo multiplicativo
+###3)Graficar tendencia...
+##detsdes<-decompose(tsdes, type="multilplicative")
