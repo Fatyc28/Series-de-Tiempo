@@ -1,0 +1,93 @@
+####Descomposicion clasica...
+####se utiliza la funcion descompose
+####otro tipo de descomposicion de la estacionariedad.
+####tendencia y estacionariedad es la descomposicion
+####por Loess la cual esta basada en un algoritmo que permite 
+##descomponer las series de tiempo en tres elementos; estacionariedad 
+### tendencia y aleatoriedad, una de las ventajas de esta descomposicion
+####es el calculo de la estacionariedad que se obtienen valores de 
+####estacionariedad no constante, en contraste con el metodo clasico de descomposicion
+
+######descomposicion clasica
+##se utiliza la funcion decompose por ejemplo
+
+desocupación 
+class(desocupación)
+des<-ts(desocupación, frequency = 4, start = 2005)
+class(des)
+desco<-decompose(des)
+
+#tendencia por descomposicion clasica
+tend1<-desco$trend
+plot (tend1,col="blue", main = "Tendencia desocupacion", ylab="Tasas", xlab="Años")
+
+
+####Descomposicion tendencia, estacional por Loose
+#### se utiliza la funcion stl()
+#### entonces para descomponer por Loose utilizamos
+des<-ts(desocupación[1:48, 1], frequency = 4, start = 2005) ##da mas datos vector columna, 
+###para cambiar la composi.
+desco2<-stl(des, s.window="periodic", robust = T) ##robust true da una mejor descomposicion
+names(desco2)
+desco2
+desco$trend
+tend2<-desco2$time.series [,2] ##llamamos (1)estacionalidad (2)TENDENCIA (3)errores
+tend2 ###tendencia por descomposiciom stl
+
+lines(tend2,col="red")
+
+esta2<-desco2$time.series[,1]
+esta2
+
+
+
+install.packages("fpp")
+require (fpp)
+ajus<-seasadj(desco2)#ajustamos estacionariedad
+
+#pronostico metodo ingenuo
+inge1<-naive(ajus, h=4)
+plot(inge1)
+inge1
+
+
+###############
+####Descomposicion clasica...
+####PIB México
+
+pib<-(read.csv(("C:\\Users\\Sala-D11\\Downloads\\PIB México.csv")))
+View(pib)
+class(pib)
+spib<-ts(pib, frequency = 4, start = 2007)
+class(spib)
+dpib<-decompose(spib)
+
+#tendencia por descomposicion clasica
+tend01<-dpib$trend
+plot (tend01,col="brown", main = "Tendencia PIB México", ylab="Pib", xlab="Años")
+
+
+####Descomposicion tendencia, estacional por Loose
+#### se utiliza la funcion stl()
+#### entonces para descomponer por Loose utilizamos
+spib<-ts(pib[1:35, 1], frequency = 4, start = 2007) ##da mas datos vector columna, 
+###para cambiar la composi.
+dpib2<-stl(spib, s.window="periodic", robust = T) ##robust true da una mejor descomposicion
+names(dpib2)
+dpib2
+dpib$trend
+tend02<-dpib2$time.series [,2] ##llamamos (1)estacionalidad (2)TENDENCIA (3)errores
+tend02 ###tendencia por descomposiciom stl
+
+lines(tend02,col="green")
+
+esta02<-dpib2$time.series[,1]
+esta02
+
+install.packages("fpp")
+require (fpp)
+ajust<-seasadj(dpib2)#ajustamos estacionariedad
+
+#pronostico metodo ingenuo
+inge01<-naive(ajust)
+plot(inge01)
