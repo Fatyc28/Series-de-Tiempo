@@ -1,0 +1,19 @@
+###Ejercicio
+
+###Grafica y detectar tendencia, estacionalidad y ciclo
+##Analizar a que se debe cada uno de los elementos
+##pib % anual 1980 a 1999
+
+
+cpib<-read.csv(file.choose())
+cpib
+scpib<-ts(cpib, frequency=1, start=1961)
+scpib
+
+plot(window(scpib,start = 1961, end=2015), ylab ="Crecimiento (%)", xlab="Año", main = "Crecimiento del PIB de México (%)", col="red", type="b", pch=8)
+## Grafica 1960 a 2015
+##NO ESTACIONARIEDAD NI TENDENCIA, POSIBLE CICLO
+
+plot(window(scpib,start = 1980, end=1999), ylab ="Crecimiento (%)", xlab="Año", main = "Crecimiento del PIB de México (%)", col="red", type="b", pch=8)
+##Grafica 1980 a 1999
+##NO ESTACIONARIEDAD NI TENDENCIA, POSIBLE CICLO
