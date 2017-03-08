@@ -1,0 +1,29 @@
+#####TAREA MODELO MULTIPLICATIVO######
+
+###1)encontrar una st con tendencia a la alza y
+##estacionariedad tambien se encremente
+###2)aplicar modelo multiplicativo
+###3)Graficar tendencia...
+
+
+##1)Obtenemos los datos de ingresos del sector publico del INEGI
+## del 1/01/07 al 31/12/16 de manera mensual
+ingreso<-(read.csv(file.choose()))
+ingreso
+ingresot<- ts(ingreso, frequency=12,start=2007)
+ingresot
+
+###2)aplicar modelo multiplicativo
+ingresod<-decompose(ingresot, type="multiplicative")
+ingresod
+
+###3)Graficar tendencia...
+ingresod$trend
+ingresod$seasonal
+plot(ingresot, col="blue",
+     main="Ingreso del sector público",
+     ylab="Ingreso", xlab="Años")
+lines(ingresod$trend,col="red", ylab="Tendencia")
+
+##Grafica los elementos estacionales
+monthplot(detsdes$seasonal, main="IVEc", ylab= "IVEc Trimestral")
