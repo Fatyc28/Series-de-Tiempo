@@ -1,0 +1,54 @@
+###Covarianza y correlacion 
+###de Importaciones y exportaciones
+
+Impo<- read.csv(file.choose())
+Impo
+expo<- read.csv(file.choose())
+expo
+
+timpo<-ts(Impo, frequency=4, star=2010)
+timpo
+
+texpo<-ts(expo, frequency = 4, start=2010)
+texpo
+
+##medias
+
+mi<-mean(timpo)
+mi
+me<-mean(texpo)
+me
+
+##x-media
+
+mediaimpo<-Impo-mi
+mediaimpo
+
+mediaexpo<-expo-me
+mediaexpo
+
+multipli<-mediaimpo*mediaexpo
+multipli
+
+suma<-sum(multipli)
+suma
+
+###Covarianza "a mano"##
+cv<-(suma/(28-1))
+cv
+###Covarianza con R##
+cov<-cov(timpo, texpo)
+cov
+
+###Correlacion "a mano"##
+
+exposd<-sd(texpo)
+exposd
+imposd<-sd(timpo)
+imposd
+
+cr<-(cov/(exposd*imposd))
+cr
+
+###Correlacion con R##
+cor(timpo, texpo)
