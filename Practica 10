@@ -1,0 +1,69 @@
+PIBm
+spib<-ts(PIBm, frequency=4, start=2007)
+spib
+acf(spib)
+
+desocupación
+sdeso<-ts(desocupación, frequency= 4, start=2005)
+sdeso
+acf(sdeso)
+# ******************************** #
+# MODELO LINEALES PARA PRONOSTICAR
+# ******************************** #
+
+
+#*********************
+########INGENUO######
+#*********************
+  
+##son la aplicacion de pronosticos lineales
+##como el ingenuo, promedio, ingenuo estacional y el de deriva 
+## el ´pronostico ingenuo esta basado en la ultima observacion que
+##arroja la st. es decir este pronostico asume que la observacion mas importante es la ultima.
+##funcion en R
+##naive(seri, h=num pronosticos)
+installed.packages("forecast")
+require(forecast)
+naive (spib, h=4) #######st, pronosticos que se requieren.
+###la ultima observacion es el primer pronostico (14663623)
+
+
+
+
+#*********************
+########PROMEDIO######
+#*********************
+
+#este metodo le da el mismo peso a todas las observaciones
+#es decir, se asume con este metodo que todas la observaciones
+#tienen la misma importancia por lo que el ronostici
+#es un promedio de todas las observaciones 
+#funcion para R
+#meanf(seri, h=numero de pronosticos)
+meanf(sdeso, h=4)
+plot(meanf(sdeso, h=4))############# da una constate es el promedio de todos los valores
+
+
+
+
+#*******************************
+########INGENUO ESTACIONAL######
+#*******************************
+
+##este metodo se utiliza en st
+##con alta estacionalidad este pronostico constiste en darle 
+##el mayor peso o la mayor ponderacion al dato del mismo preriodo
+##en el año anterior, por ejemplo trimestre 2 del 2005 es igual al
+##trimestre 2 del 2016
+## la funcion para utilizarlo es R es
+snaive (sdeso, h=4)
+    ##4.7
+    ##4.5
+    ##4.6
+    ##4.8
+
+#########################################
+#########################################
+##Tarea buscar una serie de timpo de mexico 
+## en donde con el correlograma determinen que tienen ruido blanc0
+##otra st donde muestre el correlograma exponga que la st tiene caminata aleatoria
