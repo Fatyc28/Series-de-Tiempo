@@ -1,4 +1,4 @@
-desocupación
+desocupación<- read.csv(file.choose())
 
 
 #reales
@@ -7,6 +7,9 @@ plot(window(tdesoc,start = 2005, end=2015), ylab ="Tasa de desocupacion", xlab="
 #reales hasta 2010
 plot(window(tdesoc,start = 2005, end=2010), ylab ="Desocupacion", xlab="Año", main = "Tasa de desocupación", col="red", type="b", pch=8)
 
+#reales desde 2011 a 2015
+plot(window(tdesoc,start = 2011, end=2015), ylab ="Desocupacion", xlab="Año", main = "Tasa de desocupación", col="red", type="b", pch=8)
+
 #cortamos
 desocupación
 desc<-desocupación[1:24,]
@@ -14,6 +17,13 @@ desc
 
 tdesoc<-ts(desc, frequency= 4, start=2005)
 tdesoc
+
+desc1<-desocupación [25:44, ]
+desc1
+
+tdesoc1<-ts(desc1, frequency = 4, start=2011)
+tdesoc1
+
 installed.packages("forecast")
 require(forecast)
 
@@ -22,27 +32,46 @@ require(forecast)
 #*********************
 
 desm1<- naive (tdesoc, h=20) 
+desm1
 #*********************
 ########PROMEDIO######
 #*********************
 
 desm2<- meanf(tdesoc, h=20)
+
+desm2
 #*******************************
 ########INGENUO ESTACIONAL######
 #*******************************
 
 desm3<- snaive (tdesoc, h=20)
+desm3
 #*******************
 ########DERIVA######
 #*******************
 
 desm4<- rwf(tdesoc, h=20, drift=TRUE)
+desm4
 
 x11()
-plot(desm1, main="Pronostico de desocupacion trimestral")
-lines(desm2$mean, col=5)##mean=pronostico
-lines(desm3$mean, col=6)
-lines(desm4$mean, col=7)
-legend("topleft", lty=1, col=c(5,6,7),
-       legend=c("media", "ingenuo", "ingenuo estacional", "deriva"))
+plot(desm2,main= "Pronostico de desocupacion trimestral")
+lines(desm2$mean, col="pink")
+lines(desm1$mean, col="blue")##mean=pronostico
+lines(desm3$mean, col="red")
+lines(desm4$mean, col="brown")
+lines(tdesoc1,start = 2011, end=2015, col="green")
+legend("topleft", lty=1, col=c("pink","blue", "red", "Brown", "green"),
+       legend=c("ingenuo", "media", "ingenuo estacional", "deriva", "reales"))
 
+#Hacer comparaciones
+dmi=desc1-desm1$mean
+dmi
+
+dmp=desc1-desm2$mean
+dmp
+
+dmie=desc1-desm3$mean
+dmie
+
+dmd=desc1-desm4$mean
+dmd
