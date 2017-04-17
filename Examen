@@ -102,19 +102,19 @@ rmse4<-evalm4[,2]
 rmse<-c(rmse1, rmse2,rmse3, rmse4)
 rmse<-min(rmse)
 
-if(mae = rmse1){
+if(rmse = rmse1){
   print("El RMSE minimo es el del modelo 1")
 }
 
 
-else if (mae = rmse2){
+else if (rmse = rmse2){
   print("El RMSE minimo es el del modelo 2")
 } 
 
-if else (mae =rmse3) {
+if else (rmse =rmse3) {
   print("El RMSE minimo es el del modelo 3")
 } 
-else (mae = rmse4) 
+else (rmse = rmse4) 
 print("El RMSE minimo es el del modelo 4")
  
 plot(tnet)
