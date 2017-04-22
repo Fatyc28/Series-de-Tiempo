@@ -1,0 +1,82 @@
+#Ejercicio 
+#2 series de tiempo con tendencia (alza y la baja) minimo 15 datos
+#cortar estas series en el 80% de susu datos
+#Graficar los 4 metodos holt junto con los datos reales
+
+install.packages("fpp")
+require(fpp)
+
+
+s1<-read.csv(file.choose())
+ts1<-ts(s1, start=2000, frequency=4)
+ts1
+plot(ts1)
+
+c<-ts1[1:16,]
+tc<-ts(c, start=2000,  frequency=4)
+tc
+
+#holt lineal simple
+mod1<-holt(tc, alpha=.8, beta=.2, initial="simple", h=4)
+mod1
+plot(mod1)
+
+#holt lineal exponencial
+mod2<- holt(tc, alpha=.8, beta=.2, initial="simple", exponential=TRUE, h=4)
+mod2
+plot(mod2)
+
+#Tendencia Aditiva amortiguado
+mod3<- holt(tc, damped=TRUE,h=4)
+mod3
+
+#Tendencia multiplicativa amortiguado
+mod4<- holt(tc, exponential=TRUE, damped=T,h=4)
+mod4
+
+
+x11()
+plot(ts1, main= "Pronostico s1",  type="o", pch=17)
+lines(mod1$mean, col="blue", type="o", pch=18)
+lines(mod2$mean, col="red", type="o", pch=8)
+lines(mod3$mean, col="orange", type="o", pch=3)
+lines(mod4$mean, col="green", type="o", pch=20)
+legend("topleft", lty=1, col=c(1,"blue","red","orange","green"), pch=c(17,18,8,3,20),
+       legend=c("Reales", "Simple", "Exponencial", "Aditivo", "Multiplicativo")) 
+     
+###serie 2###
+
+s2<-read.csv(file.choose())
+ts2<-ts(s2, start=2000, frequency=4)
+ts2
+
+c2<-ts2[1:16,]
+tc2<-ts(c2, start=2000,  frequency=4)
+tc2
+
+#holt lineal simple
+mod1<-holt(tc2, alpha=.8, beta=.2, initial="simple", h=4)
+mod1
+
+
+#holt lineal exponencial
+mod2<- holt(tc2, alpha=.8, beta=.2, initial="simple", exponential=TRUE, h=4)
+mod2
+
+#Tendencia Aditiva amortiguado
+mod3<- holt(tc2, damped=TRUE,h=4)
+mod3
+
+#Tendencia multiplicativa amortiguado
+mod4<- holt(tc2, exponential=TRUE, damped=T,h=4)
+mod4
+
+
+x11()
+plot(ts2, main= "Pronostico s2",  type="o", pch=17)
+lines(mod1$mean, col="blue", type="o", pch=18)
+lines(mod2$mean, col="red", type="o", pch=8)
+lines(mod3$mean, col="orange", type="o", pch=3)
+lines(mod4$mean, col="green", type="o", pch=20)
+legend("toprigh", lty=1, col=c(1,"blue","red","orange","green"), pch=c(17,18,8,3,20),
+       legend=c("Reales", "Simple", "Exponencial", "Aditivo", "Multiplicativo")) 
