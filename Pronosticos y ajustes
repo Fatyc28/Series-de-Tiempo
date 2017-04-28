@@ -1,0 +1,180 @@
+################### Ejercicio en clase 
+
+####1) precios diarios del dólar últimos 6 meses 
+
+#### 1) obtener las series
+dol<- read.csv(file.choose())
+
+#### 2) convertirlas en series de tiempo y graficarlas
+tdol<-ts(dol, start=c(2016, 208), frequency=252)
+plot(tdol, col="blue")
+
+#### 3) analizar las gráficas y decidir qué modelo usar, modelos simples (media, ingenuo, etc), holt, holt amortiguado, holt Winter
+installed.packages("forecast")
+require(forecast)
+install.packages("fpp")
+require(fpp)
+
+
+####MODELOS SIMPLES
+idol<- naive (tdol, h=10) ########INGENUO######
+pdol<- meanf(tdol, h=10)########PROMEDIO######
+iedol<- snaive (tdol, h=10)########INGENUO ESTACIONAL######
+ddol<- rwf(tdol, h=10, drift=TRUE)########DERIVA######
+
+x11()
+plot(pdol, main="Pronostico Dolar",col=1)
+lines(idol$mean, col=5)##mean=pronostico
+lines(iedol$mean, col=6)
+lines(ddol$mean, col=7)
+lines(td)
+legend("topleft", lty=1, col=c(1,5,6,7),
+       legend=c("media", "ingenuo", "ingenuo estacional", "deriva"))
+
+
+####MODELOS HOLT
+hdol<-holt(tdol, alpha=.8, beta=.2, initial="simple", h=10)#holt lineal simple
+hedol<- holt(tdol, alpha=.8, beta=.2, initial="simple", exponential=TRUE, h=10)#holt lineal exponencial
+
+x11()
+plot(hdol, main= "Pronostico Dolar")
+lines(hdol$mean, col=5, type="o", pch=3)
+lines(hedol$mean, col=6)
+legend("topleft", lty=1, col=c(5,6), pch=3,
+       legend=c ("exponencial","simple"))
+
+####MODELOS HOLT AMORTIGUADO
+hadol<- holt(tdol, damped=TRUE,  h=10)#Tendencia Aditiva amortiguado
+hamdol<- holt(tdol, exponencial=TRUE, damped=T,  h=10)#Tendencia multiplicativa amortiguado
+
+x11()
+plot(hamdol, main= "Pronostico Dolar")
+lines(hamdol$mean, col=2, type"o", pch=8)
+lines(hadol$mean, col=1, type"o", pch=8)
+legend("topleft", lty=1, col=c( 6,2), pch=8,
+       legend=c("multiplicativo", "aditivo" ))
+
+####MODELO HOTL WINTER
+hwdol<- hw(tdol, seasonal="additive",h=10)
+hwmdol<- hw(tdol, seasonal="multiplicative",h=10)
+
+x11()
+plot(hwmdol, main= "Pronostico Dolar")
+lines(hwmdol$mean, col="red", type="o", pch=8)
+lines(hwdol$mean, col="blue", type="o", pch=8)
+legend("topleft", lty=1, col=c("red","blue"), pch=8,
+       legend=c("Aditivo", "Multiplicativo")) 
+
+###Pronosticos
+x11()
+plot(tdol, main= "Pronosticos Dolar",  type="o", pch=17)
+lines(idol$mean, col="blue", type="o", pch=18)
+lines(hedol$mean, col="red", type="o", pch=8)
+lines(hamdol$mean, col="orange", type="o", pch=3)
+lines(hwmdol$mean, col="green", type="o", pch=20)
+legend("topleft", lty=1, col=c(1,"blue","red","orange","green"), pch=c(17,18,8,3,20),
+       legend=c("Reales", "Ingenuo estacional ", "Holt exponencial", "Amortiguado Multiplicativo", "Winter Multiplicativo")) 
+###Ajustes
+x11()
+plot(tdol, main= "Ajuste Dolar",  type="o", pch=16)
+lines(idol$fitted, col="blue")
+lines(hedol$fitted, col="red")
+lines(hamdol$fitted, col="orange")
+lines(hwmdol$fitted, col="green")
+legend("topleft", lty=1, col=c(1,"blue","red","orange","green"),
+       legend=c("Reales", "Ingenuo estacional ", "Holt exponencial", "Amortiguado Multiplicativo", "Winter Multiplicativo")) 
+
+**********
+  
+  ###################   ICA
+  
+  #### 1) obtener las series
+  ica<- read.csv(file.choose())
+tica<-ts(ica, start=c(2016, 001), frequency=252)
+plot(tica, col="blue")
+
+####MODELOS SIMPLES
+iica<- naive (tica, h=10) ########INGENUO######
+pica<- meanf(tica, h=10)########PROMEDIO######
+ieica<- snaive (tica, h=10)########INGENUO ESTACIONAL######
+dica<- rwf(tica, h=10, drift=TRUE)########DERIVA######
+
+####MODELOS HOLT
+hica<-holt(tica, alpha=.8, beta=.2, initial="simple", h=10)#holt lineal simple
+heica<- holt(tica, alpha=.8, beta=.2, initial="simple", exponential=TRUE, h=10)#holt lineal exponencial
+
+####MODELOS HOLT AMORTIGUADO
+haica<- holt(tica, damped=TRUE,  h=10)#Tendencia Aditiva amortiguado
+hamica<- holt(tica, exponencial=TRUE, damped=T,  h=10)#Tendencia multiplicativa amortiguado
+
+####MODELO HOTL WINTER
+hwica<- hw(tica, seasonal="additive",h=10)
+hwmica<- hw(tica, seasonal="multiplicative",h=10)
+
+
+###Pronosticos
+x11()
+plot(tica, main= "Pronosticos ICA",  type="o", pch=17)
+lines(iica$mean, col="blue", type="o", pch=18)
+lines(heica$mean, col="red", type="o", pch=8)
+lines(hamica$mean, col="orange", type="o", pch=3)
+lines(hwmica$mean, col="green", type="o", pch=20)
+legend("toprigh", lty=1, col=c(1,"blue","red","orange","green"), pch=c(17,18,8,3,20),
+       legend=c("Reales", "Ingenuo estacional ", "Holt exponencial", "Amortiguado Multiplicativo", "Winter Multiplicativo")) 
+
+###Ajustes
+x11()
+plot(tica, main= "Ajuste ICA",  type="o", pch=16)
+lines(iica$fitted, col="blue")
+lines(heica$fitted, col="red")
+lines(hamica$fitted, col="orange")
+lines(hwmica$fitted, col="green")
+legend("toprigh", lty=1, col=c(1,"blue","red","orange","green"),
+       legend=c("Reales", "Ingenuo estacional ", "Holt exponencial", "Amortiguado Multiplicativo", "Winter Multiplicativo")) 
+
+**********
+  
+  ###################  Bimbo
+
+bim<- read.csv(file.choose())
+tbim<-ts(bim, start=c(2016, 001), frequency=252)
+plot(tbim, col="blue")
+
+####MODELOS SIMPLES
+ibim<- naive (tbim, h=10) ########INGENUO######
+pbim<- meanf(tbim, h=10)########PROMEDIO######
+iebim<- snaive (tbim, h=10)########INGENUO ESTACIONAL######
+dbim<- rwf(tbim, h=10, drift=TRUE)########DERIVA######
+
+####MODELOS HOLT
+hbim<-holt(tbim, alpha=.8, beta=.2, initial="simple", h=10)#holt lineal simple
+hebim<- holt(tbim, alpha=.8, beta=.2, initial="simple", exponential=TRUE, h=10)#holt lineal exponencial
+
+####MODELOS HOLT AMORTIGUADO
+habim<- holt(tbim, damped=TRUE,  h=10)#Tendencia Aditiva amortiguado
+hambim<- holt(tbim, exponencial=TRUE, damped=T,  h=10)#Tendencia multiplicativa amortiguado
+
+####MODELO HOTL WINTER
+hwbim<- hw(tbim, seasonal="additive",h=10)
+hwmbim<- hw(tbim, seasonal="multiplicative",h=10)
+
+
+###Pronosticos
+x11()
+plot(tbim, main= "Pronosticos bimbo",  type="o", pch=17)
+lines(ibim$mean, col="blue", type="o", pch=18)
+lines(hebim$mean, col="red", type="o", pch=8)
+lines(hambim$mean, col="orange", type="o", pch=3)
+lines(hwmbim$mean, col="green", type="o", pch=20)
+legend("topleft", lty=1, col=c(1,"blue","red","orange","green"), pch=c(17,18,8,3,20),
+       legend=c("Reales", "Ingenuo estacional ", "Holt exponencial", "Amortiguado Multiplicativo", "Winter Multiplicativo")) 
+
+###Ajustes
+x11()
+plot(tbim, main= "Ajuste Bimbo",  type="o", pch=16)
+lines(ibim$fitted, col="blue")
+lines(hebim$fitted, col="red")
+lines(hambim$fitted, col="orange")
+lines(hwmbim$fitted, col="green")
+legend("topleft", lty=1, col=c(1,"blue","red","orange","green"),
+       legend=c("Reales", "Ingenuo estacional ", "Holt exponencial", "Amortiguado Multiplicativo", "Winter Multiplicativo")) 
