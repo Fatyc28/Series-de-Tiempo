@@ -1,0 +1,114 @@
+##acciones diarias bimbo
+
+require(foreing)
+install.packages("fpp")
+require(fpp)
+
+bimbo<-read.csv(file.choose())
+bimts<-ts(bimbo, frequency = 252, start = 2016)
+plot(bimts)
+
+##1) revisar si nuestra serie es estacionaria
+# se aplica la prueba de la raiz unitaria a traves de la funcion 
+# adf.test y esperamos que el p-value se menor a .05
+
+adf.test(bimts)
+dbimts<- diff(bimts)##aplicamos la primera diferenciacion con la funcion diff
+##debido a que la serie original no es estacionaria
+adf.test(dbimts)#ARIMA(p,1,q)
+##que muestra serie en su primera diferenciacion se convierte en estacionaria. 
+acf(dbimts)##las lineas que pasan los rangos son el numero de q (asociado con promedios moviles)  ARIMA(p,1,2)
+##para determinar el valor de p que se relaciona con los modelos
+#autorregresivos se utiliza la funcion pacf()
+pacf(dbimts)##auto correlacion parcial, solo una linea sobrepasa el rango  ARIMA(1,1,2)
+##por lo que se proprone un modelo ARIMA(1,1,2)
+
+modbim<- Arima(bimts, order = c(1,1,2)) ###ar1 autoregresivo, ##ma1 ma2 promedios moviles 
+modbim                                    ##AICc es el mejor comparativo y tieme que ser el mas pequeño
+ 
+modbim1<- Arima(bimts, order = c(2,1,2))
+modbim1
+##de AICc serie el mejor modelo con el criterio AIKAIKE
+# mobbim (590.26) y modbim1 (591.22) el mejor es mobbim
+
+modres<- residuals(modbim)
+Box.test(modres, lag= 12, type ="Ljung-Box")# p-value grande sugiere (p-value>.6)
+##residuales son ruidos blancos
+##el lag no importa tanto
+
+mod1<- forecast(modbim, h=12)###(modelo arima que ya elegimos y 12 pronosticos)
+plot(mod1, include = 18)###include son los ultimos 25 datos de la st
+
+summary(mod1)
+
+##autoarima propuesta de r para el arima
+auto.arima(bimts)  ##ARIMA (2,1,2)
+
+mod1res<- residuals(modbim1)
+Box.test(mod1res, lag= 12, type ="Ljung-Box")# p-value grande sugiere (p-value>.6)
+##residuales son ruidos blancos
+##el lag no importa tanto
+
+mod2<- forecast(modbim1, h=12)###(modelo arima que ya elegimos y 12 pronosticos)
+plot(mod2, include = 25)###include son los ultimos 18 datos de la st
+
+summary(mod1)
+
+############
+##################################################
+
+##acciones diarias cmex
+
+require(foreing)
+install.packages("fpp")
+require(fpp)
+
+cemx<-read.csv(file.choose())
+cemts<-ts(cemx, frequency = 252, start = 2016)
+plot(cemts)
+
+
+##1) revisar si nuestra serie es estacionaria
+# se aplica la prueba de la raiz unitaria a traves de la funcion 
+# adf.test y esperamos que el p-value se menor a .05
+
+adf.test(cemts)
+dcemts<- diff(cemts)##aplicamos la primera diferenciacion con la funcion diff
+##debido a que la serie original no es estacionaria
+adf.test(dcemts)#ARIMA(p,1,q)
+##que muestra serie en su primera diferenciacion se convierte en estacionaria. 
+acf(dcemts)##las lineas que pasan los rangos son el numero de q (asociado con promedios moviles)  ARIMA(p,1,2)
+##para determinar el valor de p que se relaciona con los modelos
+#autorregresivos se utiliza la funcion pacf()
+pacf(dcemts)##auto correlacion parcial, solo una linea sobrepasa el rango  ARIMA(1,1,2)
+##por lo que se proprone un modelo ARIMA(1,1,2)
+
+modcem<- Arima(cemts, order = c(0,1,1)) ###ar1 autoregresivo, ##ma1 ma2 promedios moviles 
+modcem                                    ##AICc es el mejor comparativo y tieme que ser el mas pequeño
+
+modres<- residuals(modcem)
+Box.test(modres, lag= 12, type ="Ljung-Box")# p-value grande sugiere (p-value>.6)
+##residuales son ruidos blancos
+##el lag no importa tanto
+
+mod1<- forecast(modcem, h=12)###(modelo arima que ya elegimos y 12 pronosticos)
+plot(mod1, include = 18)###include son los ultimos 18 datos de la st
+
+summary(mod1)
+
+
+##autoarima propuesta de r para el arima
+auto.arima(cemts)  ##ARIMA (0,1,0)
+
+modcem1<- Arima(cemts, order = c(0,1,0))
+mod1res<- residuals(modcem1)
+Box.test(mod1res, lag= 12, type ="Ljung-Box")# p-value grande sugiere (p-value>.6)
+##residuales son ruidos blancos
+##el lag no importa tanto
+
+mod2<- forecast(modcem1, h=12)###(modelo arima que ya elegimos y 12 pronosticos)
+plot(mod2, include = 25)###include son los ultimos 25 datos de la st
+
+summary(mod1)
+
+############
