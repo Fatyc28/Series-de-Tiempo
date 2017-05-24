@@ -1,0 +1,79 @@
+##acciones america movil 12.41
+
+install.packages("fpp")
+require(fpp)
+
+am<-read.csv(file.choose())
+amts<-ts(am, frequency = 252, start = 2016)
+
+View(am)
+
+ama<-Arima(amts, order = c(1,0,0))
+ama
+
+#yt= c +fi1(yt-1)+fi2(yt-2)+....+fip(yt)+et
+# en este caso el modelo AR(1) se plantea de la siguiente manera
+#yt =13.3425+.9864(yt-1)+et.... en este caso fi1=.9864
+#si tuvieramos un modelo autorregresivo de orden 2 se expresa como mod
+#arima de la sig manera
+
+ama2<- Arima (amts, order=c(2,0,0))
+ama2
+
+#en este caso el modelo AR(2) se plantea de la siguiente manera
+# yt= 13.2634+1.0601(yt-1)-.0755 (yt-2)+et ..... en este caso fi1 = 1.0601
+# fi2=-.0755
+
+#Ahora bien si tenemos de promedios moviles MA (q) se puede expresar
+# yt = c+teta1(et-1)+teta2(et-2)+....++tetap(et-q)+et
+# a traves de un modelo arima se expresa de esta forma como lo podriamos representar
+
+amat<- Arima(amts, order=c(0,0,1)) ### en ese caso es un MA(1)
+amat
+
+#que se puede expresAR de la siguiente manera
+# yt = c+teta1(et-1)+teta2(et-2)+....++tetap(et-p)
+#para el modelo planteado se expresa.....
+# yt= 12.7409 +.8605(et-1)+et en ese caso teta1 = .86050
+
+
+
+##para un modelo de promedios moviles de orden 2 se expresa en un modelo arima como
+
+yy2<- Arima (amts, order=c(0,0,2))
+yy2
+
+#en este caso se tiene un modelo MA(2)
+#que se puede expresAR de la siguiente manera
+# yt= 12.7481 teta1 = 1.339 teta2=.7423
+
+
+# MODELOS ARIMA (con difernciacion)
+# y´t=c+fi1(y´t-1)+....++fi1(y´t-p)+teta1(et-1)+teta2(et-2)+...+tetap(et-q)+et
+
+#para un modelo arima con P=2, d=3, q= 2 expresa
+
+yy3<-Arima(amts, order=c(2,3,2))
+yy3
+
+#con este modelo exoresamos
+# y´''t=.0716(y´''t-1)-.1527(y´''t-2)-1.9987(et-1)+.9998(et-2)+et
+
+
+
+
+
+
+####################
+
+
+
+ix<-read.csv(file.choose())
+ixt<-ts(ix, frequency = 252, start = 2016)
+
+ixta<-Arima(ixt, order = c(0,3,2))
+ixta
+
+
+# en este caso el modelo AR se plantea de la siguiente manera
+#y´''t=-1.9913(et-1)+.9917(et-2)+et
